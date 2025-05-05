@@ -3,9 +3,9 @@ const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
+const bodyParser = require("body-parser");
 const nodemailer = require("nodemailer");
 
-// ✅ Import Routes
 const authRoutes = require("./routes/authRoutes");
 const orderRoutes = require("./routes/orders");
 const cartRoutes = require("./routes/cart");
@@ -18,38 +18,37 @@ const foodRoutes = require("./routes/foodRouter");
 
 const app = express();
 
-// ✅ CORS Middleware (Updated with your Vercel domain)
+// ✅ Middleware
 app.use(cors({
   origin: [
     "http://localhost:3000", 
-    "https://user-host-pb74-ixy1uhncm-jeeva902529s-projects.vercel.app" // ✅ Your real Vercel domain
+    "https://user-host-pb74-ixy1uhncm-jeeva902529s-projects.vercel.app"
   ],
   credentials: true,
 }));
-
-// ✅ Body Parsing (Replaced body-parser with Express built-ins)
-app.use(express.json({ limit: "50mb" }));
-app.use(express.urlencoded({ limit: "50mb", extended: true }));
+app.use(bodyParser.json({ limit: "50mb" }));
+app.use(bodyParser.urlencoded({ limit: "50mb", extended: true }));
 app.use(cookieParser());
+app.use(express.json());
 
-// ✅ MongoDB Connection
+// ✅ MongoDB connection
 mongoose
   .connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => console.log("✅ MongoDB Connected"))
-  .catch((err) => console.error("❌ MongoDB Connection Error:", err));
+  .catch((err) => console.log("❌ MongoDB Connection Error:", err));
 
-// ✅ API Routes
-app.use("/api/auth", authRoutes);        // 👈 Auth routes (aligned with frontend fetch)
+// ✅ Routes
+app.use("/api", authRoutes);
 app.use("/api/cart", cartRoutes);
 app.use("/api/orders", orderRoutes);
-app.use("/api/login", loginRoutes);      // 👈 Legacy login (if still needed)
+app.use("/api/login", loginRoutes);
 app.use("/api/menu", menuRoutes);
 app.use("/api/support", supportRoutes);
 app.use("/api/booking", bookingRoutes);
-app.use("/api/app", appAuthRoutes);
-app.use("/api/foods", foodRoutes);
+app.use("/api", appAuthRoutes);
+app.use("/api/foods", foodRoutes); // 👈 food routes
 
-// 📩 Support Email Route (Example)
+// 📩 Support email route
 app.post("/api/support", async (req, res) => {
   const { name, email, message } = req.body;
 
@@ -81,9 +80,6 @@ app.post("/api/support", async (req, res) => {
   }
 });
 
-// ✅ Server Listener
+// ✅ Server listener
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => {
-  console.log(`🚀 Server running on port ${PORT}`);
-  console.log(`🔗 API Base URL: https://back-end-res-6emf.onrender.com`);
-});
+app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
