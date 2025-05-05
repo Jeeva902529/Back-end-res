@@ -22,10 +22,12 @@ const app = express();
 app.use(cors({
   origin: [
     "http://localhost:3000", 
-    "https://user-host-pb74-ixy1uhncm-jeeva902529s-projects.vercel.app"
+    "https://user-host-pb74-ixy1uhncm-jeeva902529s-projects.vercel.app", // Vercel
+    "https://user-host.onrender.com" // ✅ Render frontend
   ],
   credentials: true,
 }));
+
 app.use(bodyParser.json({ limit: "50mb" }));
 app.use(bodyParser.urlencoded({ limit: "50mb", extended: true }));
 app.use(cookieParser());
