@@ -23,7 +23,6 @@ app.use(cors({
   origin: ["http://localhost:3000", "https://your-frontend-domain.vercel.app"],
   credentials: true,
 }));
-<-- Simplified CORS
 app.use(bodyParser.json({ limit: "50mb" }));
 app.use(bodyParser.urlencoded({ limit: "50mb", extended: true }));
 app.use(cookieParser());
