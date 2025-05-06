@@ -22,7 +22,7 @@ const app = express();
 app.use(cors({
   origin: [
     "http://localhost:3000", 
-    "https://user-host-pb74-ixy1uhncm-jeeva902529s-projects.vercel.app", // Vercel
+    "https://user-host-pb74.vercel.app/", // Vercel
     "https://user-host.onrender.com" // ✅ Render frontend
   ],
   credentials: true,
