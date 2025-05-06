@@ -20,11 +20,17 @@ const app = express();
 
 // ✅ Middleware
 app.use(cors({
-  origin: [
-    "http://localhost:3000", 
-    "https://user-host-pb74.vercel.app/", // Vercel
-    "https://user-host.onrender.com" // ✅ Render frontend
-  ],
+  origin: (origin, callback) => {
+    const allowedOrigins = [
+      "http://localhost:3000",
+      "https://user-host-pb74.vercel.app",
+    ];
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
   credentials: true,
 }));
 
