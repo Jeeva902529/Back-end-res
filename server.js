@@ -24,6 +24,8 @@ app.use(cors({
     const allowedOrigins = [
       "http://localhost:3000",
       "https://user-host-pb74.vercel.app",
+      "https://admin-host-pb74.vercel.app",
+      "https://admin-host.vercel.app" // ✅ New frontend added here
     ];
     if (!origin || allowedOrigins.includes(origin)) {
       callback(null, true);
@@ -33,6 +35,7 @@ app.use(cors({
   },
   credentials: true,
 }));
+
 
 app.use(bodyParser.json({ limit: "50mb" }));
 app.use(bodyParser.urlencoded({ limit: "50mb", extended: true }));
